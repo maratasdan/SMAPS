@@ -9,7 +9,51 @@ import SwiftUI
 
 struct TrackPerson: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        NavigationStack{
+            
+            VStack {
+                
+                Image(systemName: "mappin.and.ellipse.circle")
+                    .symbolEffect(.pulse.byLayer, options: .repeat(.continuous))
+                    .font(.largeTitle)
+                    .foregroundStyle(Color.green)
+                    .padding(.bottom, 20)
+                
+                Text("Personnel Locator")
+                    .font(.title2)
+                    .bold()
+                
+                List {
+                    NavigationLink(destination: TrackPerson()) {
+                        HStack {
+                            
+                            Image(systemName: "person.circle")
+                                .font(.largeTitle)
+                                .foregroundStyle(Color.green)
+                            
+                            VStack(alignment: .leading){
+                                Text("Person 1")
+                                    .bold()
+                                Text("Last seen: 10:00 AM")
+                                    .font(.footnote)
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                .scrollContentBackground(.hidden)
+                .listStyle(.plain)
+                .padding(.top, 20)
+                
+                Spacer()
+                
+            }
+            .padding()
+            
+        }
+        
     }
 }
 

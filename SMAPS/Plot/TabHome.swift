@@ -9,7 +9,24 @@ import SwiftUI
 
 struct TabHome: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            
+            TabView{
+                
+                PlotCreate()
+                    .tabItem {
+                        Image(systemName: "plus.square.on.square")
+                    }
+                
+                PlotHome()
+                    .tabItem {
+                        Image(systemName: "list.bullet")
+                    }
+                
+            }
+            
+            
+        }
     }
 }
 

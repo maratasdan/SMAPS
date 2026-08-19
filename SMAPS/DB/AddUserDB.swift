@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class AddUserData {
+final class AddUserData: Identifiable {
     var userid: String
     var firstName: String
     var middleName: String?
@@ -38,7 +38,7 @@ class AddUserData {
 }
 
 @Model
-class AddDocs {
+final class AddDocs: Identifiable {
     var imageid: String
     var userid: String
     var path: String
@@ -51,7 +51,7 @@ class AddDocs {
 }
 
 @Model
-class AddTrees {
+final class AddTrees: Identifiable {
     var treeid: String
     var userid: String
     var treetype: String

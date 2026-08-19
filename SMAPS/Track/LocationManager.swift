@@ -35,3 +35,4 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         print("Error getting location:", error.localizedDescription)
     }
 }
+

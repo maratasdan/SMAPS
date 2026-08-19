@@ -9,13 +9,29 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack{
+            ZStack {
+                Image("SSCBG")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
+                VStack{
+                    Spacer()
+                    NavigationLink(destination: Home()){
+                        Text("Plot Now")
+                            .font(.title3)
+                            .padding()
+                            .frame(maxWidth: 300)
+                            .background(Color.green)
+                            .foregroundStyle(Color.white)
+                            .bold()
+                            .cornerRadius(30)
+                    }
+                }
+            }
+            .padding()
         }
-        .padding()
     }
 }
 
