@@ -21,8 +21,9 @@ final class AddUserData: Identifiable {
     var city: String
     var province: String
     var postalCode: String
+    var status: String?
     
-    init(userid: String, firstName: String, middleName: String? = nil, lastName: String, email: String, contactNumber: String, sitio: String, barangay: String, city: String, province: String, postalCode: String) {
+    init(userid: String, firstName: String, middleName: String? = nil, lastName: String, email: String, contactNumber: String, sitio: String, barangay: String, city: String, province: String, postalCode: String, status: String? = nil) {
         self.userid = userid
         self.firstName = firstName
         self.middleName = middleName
@@ -34,6 +35,7 @@ final class AddUserData: Identifiable {
         self.city = city
         self.province = province
         self.postalCode = postalCode
+        self.status = status
     }
 }
 

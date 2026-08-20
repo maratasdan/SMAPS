@@ -178,7 +178,6 @@ struct AddUser: View {
                                                         Image(systemName: "x.circle.fill")
                                                             .tint(Color.red)
                                                     }
-                                                    .glassEffect(.regular)
                                                 }
                                                 .padding(5)
                                                 Spacer()
@@ -273,7 +272,7 @@ struct AddUser: View {
     func saveData(userid: String, fname: String, mname: String, lname: String, contact: String, email: String, sitio: String, barangay: String, city: String, province: String, zip: String) {
 //      userinformation
         
-        let userdata = AddUserData(userid: userid, firstName: fname, lastName: lname, email: email, contactNumber: contact, sitio: sitio, barangay: barangay, city: city, province: province, postalCode: zip)
+        let userdata = AddUserData(userid: userid, firstName: fname, lastName: lname, email: email, contactNumber: contact, sitio: sitio, barangay: barangay, city: city, province: province, postalCode: zip, status: "")
         
         modelContext.insert(userdata)
         

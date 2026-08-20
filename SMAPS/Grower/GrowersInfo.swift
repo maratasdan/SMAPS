@@ -7,12 +7,176 @@
 
 import SwiftUI
 
+import PhotosUI
+import Foundation
+import SwiftData
+
 struct GrowersInfo: View {
+    
+    let userid: String
+    
+    @Query private var userdata: [AddUserData]
+    @Query private var docsdata: [AddDocs]
+    @Query private var tressdata: [AddTrees]
+    
+    @State private var selectedImage: PhotosPickerItem?
+    @State private var imagePaths: [String] = []
+    @State private var openPreviewImage: Bool = false
+    @State private var selectedPreviewPath = ""
+    
+    init(userid: String) {
+        self.userid = userid
+        
+        _userdata = Query(
+            filter: #Predicate<AddUserData> { user in
+                user.userid == userid
+            }
+        )
+        
+        _docsdata = Query(
+            filter: #Predicate<AddDocs> { doc in
+                doc.userid == userid
+            }
+        )
+        
+        _tressdata = Query(
+            filter: #Predicate<AddTrees> { tree in
+                tree.userid == userid
+            }
+        )
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List {
+                Section("User Information"){
+                    ForEach(userdata) { user in
+                        
+                        VStack(alignment: .leading) {
+                            Text("Name")
+                                .font(.footnote)
+                            HStack{
+                                Text("\(user.firstName) \(user.middleName ?? "") \(user.lastName)")
+                                    .bold()
+                            }
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("Contact Number")
+                                .font(.footnote)
+                            HStack{
+                                Text("\(user.contactNumber)")
+                                    .bold()
+                            }
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("Email Address")
+                                .font(.footnote)
+                            HStack{
+                                Text("\(user.email)")
+                                    .bold()
+                            }
+                        }
+                        
+                    }
+                }
+                
+                Section("Personal Address"){
+                    ForEach(userdata) { user in
+                        
+                        VStack(alignment: .leading) {
+                            HStack{
+                                Text("\(user.sitio), \(user.barangay), \(user.city), \(user.province) \(user.postalCode)")
+                                    .bold()
+                            }
+                        }
+                    }
+                }
+                
+                Section("Trees"){
+                    ForEach(tressdata) { tree in
+                        
+                        HStack(spacing: 5) {
+                            ZStack {
+                                Rectangle()
+                                    .frame(width: 45, height: 45)
+                                    .foregroundStyle(Color.green.opacity(0.15))
+                                    .cornerRadius(50)
+                                Image(systemName: "tree.fill")
+                                    .tint(Color.green)
+                                    .foregroundStyle(Color.green)
+                            }
+                            VStack(alignment: .leading) {
+                                Text("\(tree.treetype)")
+                                    .bold()
+                                HStack {
+                                    Text("\(tree.numberofTrees) Trees |")
+                                    Text("\(tree.estkg) Kilograms")
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                Section("Docs"){
+                    ScrollView(.horizontal) {
+                         HStack{
+                            ForEach(docsdata) { doc in
+                                if let uiImage = UIImage(contentsOfFile: doc.path) {
+                                    ZStack {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                            .onTapGesture {
+                                                selectedPreviewPath = doc.path
+                                                openPreviewImage = true
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
+                Section("Developer Side (Ignore)"){
+                    VStack(alignment: .leading) {
+                        ForEach(docsdata) { doc in
+                            
+                            Text("\(doc.path)")
+                                .font(.footnote)
+                                .foregroundStyle(Color.secondary)
+                            
+                        }
+                    }
+                }
+                
+            }
+            .sheet(isPresented: $openPreviewImage){
+                VStack {
+                    VStack {
+                        if let uiImage = UIImage(contentsOfFile: selectedPreviewPath) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .padding(20)
+                        }
+                    }
+                    .padding(20)
+                }
+                .presentationDetents([.medium, .large])
+            }
+        }
+        .navigationTitle("Grower's Information")
     }
 }
 
 #Preview {
-    GrowersInfo()
+    GrowersInfo(userid: "")
 }

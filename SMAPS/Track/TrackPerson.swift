@@ -15,7 +15,6 @@ struct TrackPerson: View {
             VStack {
                 
                 Image(systemName: "mappin.and.ellipse.circle")
-                    .symbolEffect(.pulse.byLayer, options: .repeat(.continuous))
                     .font(.largeTitle)
                     .foregroundStyle(Color.green)
                     .padding(.bottom, 20)

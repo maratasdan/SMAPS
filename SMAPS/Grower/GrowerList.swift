@@ -14,8 +14,6 @@ struct GrowerList: View {
     
     @State private var name = "Dan"
     
-    
-    
     var body: some View {
         NavigationStack {
             
@@ -26,15 +24,17 @@ struct GrowerList: View {
             }else{
                 List(userlist) { user in
                     
-                    HStack{
-                        ProfileCircleInitial(imgName: "", fname: user.firstName, lname: user.lastName)
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("\(user.firstName) \(user.lastName)")
-                                    .bold()
-                                Text("\(user.city), \(user.province)")
-                                    .font(.footnote)
-                                
+                    NavigationLink(destination: GrowersInfo(userid: user.userid)) {
+                        HStack{
+                            ProfileCircleInitial(imgName: "", fname: user.firstName, lname: user.lastName, userid: user.userid)
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("\(user.firstName) \(user.lastName)")
+                                        .bold()
+                                    Text(user.userid)
+                                        .font(.system(size: 7))
+                                        .foregroundStyle(Color.secondary)
+                                }
                             }
                         }
                     }
@@ -50,17 +50,34 @@ struct ProfileCircleInitial: View {
     let imgName: String
     let fname: String
     let lname: String
+    let userid: String
     
     var body: some View {
         ZStack {
+            
+//            if userid == "" {
+//                Circle()
+//                    .frame(width: 50, height: 50)
+//                    .foregroundStyle(Color.red)
+//            } else {
+//                Circle()
+//                    .frame(width: 50, height: 50)
+//                    .foregroundStyle(Color.red.opacity(0.50))
+//            }
+            
             Circle()
                 .frame(width: 50, height: 50)
                 .foregroundStyle(Color.green)
-            HStack{
-                Text("\(String(fname.prefix(1)))\(String(lname.prefix(1)))")
-                    .bold()
-                    .foregroundStyle(Color.white)
-                    .font(.title2)
+            
+           
+                
+            VStack {
+                HStack{
+                    Text("\(String(fname.prefix(1)))\(String(lname.prefix(1)))")
+                        .bold()
+                        .foregroundStyle(Color.white)
+                        .font(.title2)
+                }
             }
             
         }
