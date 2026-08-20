@@ -46,6 +46,20 @@ struct GrowersInfo: View {
         )
     }
     
+    private func getCurrentImagePath(_ savedPath: String) -> String {
+        let fileName = URL(fileURLWithPath: savedPath).lastPathComponent
+        
+        let documentsDirectory = Foundation.FileManager.default.urls(
+            for: Foundation.FileManager.SearchPathDirectory.documentDirectory,
+            in: Foundation.FileManager.SearchPathDomainMask.userDomainMask
+        )[0]
+        
+        return documentsDirectory
+            .appendingPathComponent(fileName)
+            .path
+    }
+    
+    
     var body: some View {
         NavigationStack {
             List {
@@ -122,23 +136,26 @@ struct GrowersInfo: View {
                 Section("Docs"){
                     ScrollView(.horizontal) {
                          HStack{
-                            ForEach(docsdata) { doc in
-                                if let uiImage = UIImage(contentsOfFile: doc.path) {
-                                    ZStack {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 100, height: 100)
-                                            .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
-                                            )
-                                            .onTapGesture {
-                                                selectedPreviewPath = doc.path
-                                                openPreviewImage = true
-                                            }
-                                    }
-                                }
-                            }
+                             ForEach(docsdata) { doc in
+                                             
+                                 let imagePath = getCurrentImagePath(doc.path)
+                                 
+                                 if let uiImage = UIImage(contentsOfFile: imagePath) {
+                                     ZStack {
+                                         Image(uiImage: uiImage)
+                                             .resizable()
+                                             .scaledToFill()
+                                             .frame(width: 100, height: 100)
+                                             .clipShape(
+                                                 RoundedRectangle(cornerRadius: 12)
+                                             )
+                                             .onTapGesture {
+                                                 selectedPreviewPath = doc.path
+                                                 openPreviewImage = true
+                                             }
+                                     }
+                                 }
+                             }
                         }
                     }
                 }
@@ -160,11 +177,16 @@ struct GrowersInfo: View {
             .sheet(isPresented: $openPreviewImage){
                 VStack {
                     VStack {
-                        if let uiImage = UIImage(contentsOfFile: selectedPreviewPath) {
+                        
+                        let imagePath = getCurrentImagePath(selectedPreviewPath)
+                        
+                        if let uiImage = UIImage(contentsOfFile: imagePath) {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: 12)
+                                )
                                 .padding(20)
                         }
                     }
@@ -174,7 +196,35 @@ struct GrowersInfo: View {
             }
         }
         .navigationTitle("Grower's Information")
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {
+                    uploadDataOnline()
+                }) {
+                    Image(systemName: "cloud.fill")
+                        .foregroundStyle(Color.red)
+                }
+            }
+        }
     }
+    
+    func uploadDataOnline() {
+        
+        guard let url = URL(string: "https://smaps.stellarseedscorp.org/Growers/upload_growers.php") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let data: [String: Any] = [
+            "userinfo": userdata,
+            "trees": tressdata,
+            "docs": docsdata
+        ]
+        
+        print(data)
+    }
+    
 }
 
 #Preview {
