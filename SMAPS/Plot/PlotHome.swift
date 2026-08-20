@@ -172,21 +172,19 @@ struct PlotHome: View {
                             .swipeActions(edge: .leading){
                                 if plhead.status == "1" {
                                     
-                                    Button(role: .confirm){
-            //                            modelContext.delete(plhead)
-        //                                uploadDataDet(pid: plhead.)
+                                    Button(action: {
                                         setPlotHeadid = plhead.id
                                         openUploadPlot = true
-                                    } label: {
+                                    }) {
                                         Label("", systemImage: "cloud.circle")
                                             .tint(Color.blue)
                                     }
                                     
                                 }else if plhead.status == "2" {
                                     
-                                    Button(role: .confirm){
+                                    Button(action: {
                                         openAlreadyUploaded = true
-                                    } label: {
+                                    }) {
                                         Label("", systemImage: "checkmark.arrow.trianglehead.counterclockwise")
                                             .tint(Color.green)
                                     }

@@ -26,7 +26,7 @@ struct GrowerList: View {
                     
                     NavigationLink(destination: GrowersInfo(userid: user.userid)) {
                         HStack{
-                            ProfileCircleInitial(imgName: "", fname: user.firstName, lname: user.lastName, userid: user.userid)
+                            ProfileCircleInitial(imgName: "", fname: user.firstName, lname: user.lastName, status: user.status ?? "0")
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text("\(user.firstName) \(user.lastName)")
@@ -50,25 +50,20 @@ struct ProfileCircleInitial: View {
     let imgName: String
     let fname: String
     let lname: String
-    let userid: String
+    let status: String
     
     var body: some View {
         ZStack {
             
-//            if userid == "" {
-//                Circle()
-//                    .frame(width: 50, height: 50)
-//                    .foregroundStyle(Color.red)
-//            } else {
-//                Circle()
-//                    .frame(width: 50, height: 50)
-//                    .foregroundStyle(Color.red.opacity(0.50))
-//            }
-            
-            Circle()
-                .frame(width: 50, height: 50)
-                .foregroundStyle(Color.green)
-            
+            if status == "1" {
+                Circle()
+                    .frame(width: 50, height: 50)
+                    .foregroundStyle(Color.green)
+            } else {
+                Circle()
+                    .frame(width: 50, height: 50)
+                    .foregroundStyle(Color.red)
+            }
            
                 
             VStack {
